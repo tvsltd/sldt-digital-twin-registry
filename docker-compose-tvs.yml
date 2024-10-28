@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15.6-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:4.23
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 15432:80
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  digital_twin_registry:
+    container_name: digital_twin_registry
+    build:
+      dockerfile: Dockerfile
+    command: "java -jar /app/backend/target/digital-twin-registry-backend-DEV-SNAPSHOT.jar"
+    ports:
+      - 4243:4243
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms512m -Xmx2048m
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: example
+      SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT: 0
+      # disable security
+      SPRING_PROFILES_ACTIVE: local
+      IDP_ISSUER_URI: ""
+
+    volumes:
+        - ./build:/app/build
+
+volumes:
+  postgres-data:
+  pgadmin:
