@@ -1,19 +1,56 @@
-## Setup & Usage (Docker)
+# Docker Setup & Installation Guide
 
-Follow the steps below to setup & run digital-twin-registry:
+This guide provides step-by-step instructions for setting up and running the Digital Twin Registry using Docker.
 
-1. Run docker compose to launch all services (digital-twin-registry, postgres, pgadmin). 
+## Prerequisites
 
-    > $ docker compose -f docker-compose-tvs.yml up
+- Docker and Docker Compose installed on your system
+- Postman (for API testing)
 
-2. The digital-twin-registry will be launched on port [4243](http://localhost:4243) 
+## Quick Start
 
-3. You can try to go through the Swagger documentation and try exploring the APIs (which won't work) :p [digital-twin-registry](http://localhost:4242)
+1. Launch the Services
+    ```bash
+    $ docker compose -f docker-compose-tvs.yml up
+    ```
+This command starts all required services:
+- Digital Twin Registry
+- PostgreSQL Database
+- pgAdmin (Database Management Interface)
 
-4. Now open postman and import the collection in the project repository named **digital-twin-registry.postman_collection.json**
+2. Access the Application
+- Digital Twin Registry: [http://localhost:4243](http://localhost:4243)
 
-5. Now you can explore all the available APIs which are modified version (included example and other details) of their postman collection, which is located [here](docs/development/postman/tractusx-dtr-aas-3.1.0-collection.json)
+## API Testing
 
-6. You are ready to explore further more by making changes by yourself. Just make sure to use the following command after making modifications in the codebase:
+### Using Postman
+1. Import the API collection:
+   - Locate `digital-twin-registry.postman_collection.json` in the project repository
+   - Import it into Postman
 
-    > docker compose  -f docker-compose-tvs.yml up --build
+2. Available Collections:
+   - The imported collection includes enhanced versions of the original APIs with:
+     - Example requests and responses
+     - Detailed documentation
+     - Additional metadata
+   - Reference collection available at: `docs/development/postman/tractusx-dtr-aas-3.1.0-collection.json`
+
+## Development
+
+### Making Changes
+1. Modify the codebase as needed
+2. Rebuild and restart the services:
+    ```bash
+    $ docker compose -f docker-compose-tvs.yml up --build
+    ```
+
+## Troubleshooting
+
+If you encounter any issues:
+1. Ensure all required ports (4242, 4243) are available
+2. Check Docker logs for detailed error messages
+3. Verify that all services are running using `docker ps`
+
+## Support
+
+For additional support or to report issues, please refer to our documentation or create an issue in the repository.
